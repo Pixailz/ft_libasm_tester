@@ -1,0 +1,11 @@
+# Compiled thing
+## OBJ
+obj/
+**/*.o
+## LIB
+**/*.a
+## test program
+a.out
+test*
+
+libasm_tester
