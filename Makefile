@@ -24,44 +24,51 @@ LIBTEST_SRC				:= $(addprefix $(LIBTEST_SRC_DIR)/,$(LIBTEST_SRC))
 CC						:= gcc
 CCFLAGS					:= -Wall -Wextra -Werror -I./inc
 
-PRINT					= @echo -e
+MAKECMD					:= make -s
+
+INFO					= @echo -e [\\x1b[32m+\\x1b[0m] $(1)
 
 # DEFAULT RULES
-all:					test
+all:					$(NAME)
+
+$(NAME):				$(LIBASM_TARGET) $(LIBTEST_TARGET)
+	$(call INFO,Compiling tester)
+	$(CC) $(CCFLAGS) $(LIBTEST_MAIN) $(LIBTEST_TARGET) $(LIBASM_TARGET) -o $(NAME)
+
+print_obj:
+	$(call INFO,Creating tester object)
+
+# COMPILING TESTER
+$(LIBTEST_TARGET):		$(LIBTEST_OBJ)
+	$(call INFO,Creating tester archive)
+	ar rcs $(LIBTEST_TARGET) $(LIBTEST_OBJ)
+
+$(LIBTEST_OBJ):			$(LIBTEST_OBJ_DIR)/%.o: $(LIBTEST_SRC_DIR)/%.c
+	@[ ! -d $(@D) ] && mkdir -p $(@D) || true
+	$(CC) $(CCFLAGS) -c $< -o $@
 
 # COMPILING LIBASM
 $(LIBASM_TARGET):
-	$(PRINT) \\x1b[31mCompiling\\x1b[0m libasm
-	make -C $(LIBASM_DIR)
-	$(PRINT) \\x1b[32mCompiled\\x1b[0m libasm
+	$(MAKECMD) -C $(LIBASM_DIR)
 
 clean:
+	$(call INFO,Cleaning tester)
 	rm -rf $(LIBTEST_OBJ_DIR) $(LIBTEST_TARGET)
 
 fclean:					clean
+	$(call INFO,Full cleaning tester)
 	rm -rf $(NAME)
 
 re:						fclean all
 
 clean_all:				clean
-	$(PRINT) \\x1b[31mCleaning\\x1b[0m libasm
-	make -C $(LIBASM_DIR) clean
-	$(PRINT) \\x1b[32mCleaned\\x1b[0m libasm
+	$(MAKECMD) -C $(LIBASM_DIR) clean
 
 fclean_all:				fclean
-	$(PRINT) \\x1b[31mFull cleaning\\x1b[0m libasm
-	make -C $(LIBASM_DIR) fclean
-	$(PRINT) \\x1b[32mFull cleaned\\x1b[0m libasm
+	$(MAKECMD) -C $(LIBASM_DIR) fclean
 
 re_all:					fclean_all all
 
-# COMPILING TESTER
-$(LIBTEST_OBJ):			$(LIBTEST_OBJ_DIR)/%.o: $(LIBTEST_SRC_DIR)/%.c
-	@[ ! -d $(@D) ] && mkdir -p $(@D) || true
-	$(CC) $(CCFLAGS) -c $< -o $@
-
-$(LIBTEST_TARGET):		$(LIBTEST_OBJ)
-	ar rcs $(LIBTEST_TARGET) $(LIBTEST_OBJ)
-
-test:					$(LIBASM_TARGET) $(LIBTEST_TARGET)
-	$(CC) $(CCFLAGS) $(LIBTEST_MAIN) $(LIBTEST_TARGET) $(LIBASM_TARGET) -o $(NAME)
+run:					$(NAME)
+	$(call INFO,Running tester)
+	./$(NAME)
