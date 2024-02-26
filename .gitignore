@@ -7,5 +7,8 @@ obj/
 ## test program
 a.out
 test*
+!src/test.c
 
+# LOG FILE
+*.log
 libasm_tester

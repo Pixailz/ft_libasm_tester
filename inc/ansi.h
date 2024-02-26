@@ -56,8 +56,6 @@
 # define SEP			" → "					// UNICODE ARROW
 # define SEP_RES		" "						// UNICODE ARROW
 
-# define GOTO_RESULT	CUR_COL("30")
-
 # define P_PART			"[" ORA "*" RST "]" SEP
 # define P_TEST			"[" BLU "*" RST "]" SEP
 # define P_OK			"[" GRE "+" RST "]" SEP_RES

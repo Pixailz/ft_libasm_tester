@@ -6,6 +6,7 @@ void	w_strcpy(char *src)
 	char	*ptr;
 
 	ptr = ft_strcpy(buffer, src);
+	ptest(src);
 	if (ptr == buffer)
 		pok("ptr");
 	else
@@ -20,4 +21,5 @@ void	w_strcpy(char *src)
 		pko("cmp");
 		ERR |= ERR_STRCPY_CMP;
 	}
+	pnl();
 }

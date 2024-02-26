@@ -11,6 +11,7 @@ LIBTEST_TARGET			:= libtest.a
 LIBTEST_MAIN			:= $(LIBTEST_SRC_DIR)/main.c
 
 LIBTEST_SRC				:=	print.c \
+							test.c \
 							wrapper/read.c \
 							wrapper/strcmp.c \
 							wrapper/strcpy.c \
@@ -22,7 +23,13 @@ LIBTEST_OBJ				:= $(addprefix $(LIBTEST_OBJ_DIR)/,$(LIBTEST_SRC:%.c=%.o))
 LIBTEST_SRC				:= $(addprefix $(LIBTEST_SRC_DIR)/,$(LIBTEST_SRC))
 
 CC						:= gcc
-CCFLAGS					:= -Wall -Wextra -Werror -I./inc
+CCFLAGS					:= -Wall -Wextra -I./inc
+
+ifneq ($(DEBUG),1)
+CCFLAGS					+= -Werror
+else
+CCFLAGS					+= -ggdb
+endif
 
 MAKECMD					:= make -s
 

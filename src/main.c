@@ -6,65 +6,57 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 20:14:10 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/02/25 18:08:58 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/02/26 21:24:05 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libasm_tester.h"
 
-flags ERR = ERR_NOERR;
+flags	ERR = ERR_NOERR;
+int		FD_LOG;
+int		FD_IN;
+int		FD_DEVNULL;
 
-/* MAIN */
-void	t_strlen(void)
+# define LOG_PERM 00755
+
+int	redirect_to_devnull(void)
 {
-	ppart("ft_strlen");
-	w_strlen(NULL);
-	w_strlen("1234");
-	w_strlen("\x00test");
+	FD_IN = dup(1);
+	close(1);
+	FD_DEVNULL = open("/dev/null", O_RDWR);
+	dup2(FD_DEVNULL, 1);
+	return (0);
 }
 
-void	t_strcpy(void)
+int	init_data()
 {
-	ppart("ft_strcpy");
-	w_strcpy("1234");
+	// FD_LOG = open("exec.log", O_APPEND | O_CREAT | O_WRONLY, LOG_PERM);
+	FD_LOG = open("exec.log", O_TRUNC | O_CREAT | O_WRONLY, LOG_PERM);
+	if (FD_LOG < 0)
+		return (1);
+	if (redirect_to_devnull())
+		return (1);
+	return (0);
 }
 
-void	t_strcmp(void)
+void	free_data()
 {
-	ppart("ft_strcmp");
-	w_strcmp("1234", "1234", 'e');
-	w_strcmp("1234", "4321", 'l');
-	w_strcmp("4321", "1234", 'g');
-}
-
-void	t_write(void)
-{
-	ppart("ft_write");
-	w_write(1, "Hello World\n", 13);
-	w_write(-1, "Hello World\n", 13);
-}
-
-void	t_read(void)
-{
-	ppart("ft_read");
-	// w_read(0, 10);
-}
-
-void	t_strdup(void)
-{
-	ppart("ft_strdup");
-	w_strdup("Hello");
-	w_strdup("");
-	// w_strdup(NULL); // SEGFAULT on both libc and libasm ...
+	close(FD_DEVNULL);
+	close(FD_IN);
+	if (FD_LOG > 0)
+		close(FD_LOG);
 }
 
 int	main(void)
 {
+	if (init_data())
+		return (1);
 	t_strlen();
-	// t_strcpy();
-	// t_strcmp();
-	// t_write();
-	// t_read();
+	t_strcpy();
+	t_strcmp();
+	t_write();
+	t_read();
 	// t_strdup();
+	free_data();
 	return (0);
 }

@@ -15,5 +15,5 @@ void	w_strlen(char *str)
 		pko("size");
 		ERR |= ERR_STRLEN;
 	}
-	puts("");
+	pnl();
 }

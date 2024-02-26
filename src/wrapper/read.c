@@ -7,12 +7,11 @@ void	w_read(int fd, int size)
 	int		err[2] = {0};
 	int		retv[2] = {0};
 
+	ppread(fd, size);
 	retv[0] = read(fd, buff1, size);
 	err[0] = errno;
-	perrno("libc errno", err[0]);
 	retv[1] = ft_read(fd, buff2, size);
 	err[1] = errno;
-	perrno("test errno", err[1]);
 	if (retv[0] == retv[1])
 		pok("retv");
 	else
@@ -34,4 +33,5 @@ void	w_read(int fd, int size)
 		pko("buff");
 		ERR |= ERR_READ_BUF;
 	}
+	pnl();
 }
