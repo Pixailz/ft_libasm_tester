@@ -6,7 +6,7 @@ void	t_strlen(void)
 	w_strlen(NULL);
 	w_strlen("1234");
 	w_strlen("\x00test");
-
+	w_strlen("");
 	pnl();
 }
 
@@ -17,6 +17,7 @@ void	t_strcpy(void)
 	// w_strcpy(NULL); // SEGFAULT
 	w_strcpy("1234");
 	w_strcpy("\x00test");
+	w_strcpy("");
 
 	pnl();
 }
@@ -24,10 +25,14 @@ void	t_strcpy(void)
 void	t_strcmp(void)
 {
 	ppart("ft_strcmp");
+
 	w_strcmp("1234", "1234", 'e');
 	// w_strcmp(NULL, "\x00", 'e');
 	w_strcmp("1234", "4321", 'l');
 	w_strcmp("4321", "1234", 'g');
+	w_strcmp("", "", 'e');
+	w_strcmp("A", "", 'g');
+	w_strcmp("", "A", 'l');
 
 	pnl();
 }
@@ -38,6 +43,8 @@ void	t_write(void)
 	w_write(FD_IN, "TEST", 4);
 	w_write(FD_DEVNULL, "TEST", 4);
 	w_write(-1, "TEST", 4);
+	w_write(FD_IN, "", 4);
+	w_write(FD_IN, "TEST", 1);
 
 	pnl();
 }
