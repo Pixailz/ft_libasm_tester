@@ -11,5 +11,6 @@ void	w_strdup(const char *str)
 	}
 	else
 		pok("cmp");
+	free(ret);
 	pnl();
 }

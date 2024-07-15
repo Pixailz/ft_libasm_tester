@@ -56,7 +56,7 @@ int	main(void)
 	t_strcmp();
 	t_write();
 	t_read();
-	// t_strdup();
+	t_strdup();
 	free_data();
 	return (0);
 }

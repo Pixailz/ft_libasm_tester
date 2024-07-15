@@ -33,7 +33,7 @@ endif
 
 MAKECMD					:= make -s
 
-INFO					= @echo -e [\\x1b[32m+\\x1b[0m] $(1)
+INFO					= @/usr/bin/echo -e [\\x1b[32m+\\x1b[0m] $(1)
 
 # DEFAULT RULES
 all:					$(NAME)
