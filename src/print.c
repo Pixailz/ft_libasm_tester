@@ -15,6 +15,11 @@ void	pnl(void) { dprintf(FD_LOG, "\n"); }
 int	padd(int fd, int col, int size)
 {
 	int		s = (size == 0 ? COL_RESULT : size) - col - 1;
+	if (s <= 0)
+	{
+		printf("\n");
+		return (1);
+	}
 	char	*tmp = calloc(sizeof(char), s + 1);
 
 	if (!tmp)

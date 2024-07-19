@@ -2,7 +2,7 @@
 
 void	w_strcpy(char *src)
 {
-	char	buffer[100] = {0};
+	char	buffer[0xffff] = {0};
 	char	*ptr;
 
 	ptr = ft_strcpy(buffer, src);
